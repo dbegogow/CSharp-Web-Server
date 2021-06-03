@@ -11,7 +11,7 @@ namespace MyWebServer
         public static async Task Main()
         {
             var address = IPAddress.Parse("127.0.0.1");
-            var port = 8080;
+            var port = 9090;
 
             var serverListener = new TcpListener(address, port);
 
@@ -24,11 +24,18 @@ namespace MyWebServer
 
             var networkStream = connection.GetStream();
 
-            var response = @"HTTP/1.1 200 OK
+            var content = "<h1>Здрасти от Джулио!</h1>";
+            var contentLength = Encoding.UTF8.GetByteCount(content);
 
-Hello from the server!";
+            var response = $@"HTTP/1.1 200 OK
+Content-length: {contentLength}
+Content-Type: text/html; charset=UTF-8
+
+{content}";
 
             var responseBytes = Encoding.UTF8.GetBytes(response);
+
+            await networkStream.WriteAsync(responseBytes);
 
             connection.Close();
         }
