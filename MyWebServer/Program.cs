@@ -20,6 +20,8 @@ namespace MyWebServer
             Console.WriteLine("Listening for requests...");
 
             var connection = await serverListener.AcceptTcpClientAsync();
+
+            connection.Close();
         }
     }
 }
