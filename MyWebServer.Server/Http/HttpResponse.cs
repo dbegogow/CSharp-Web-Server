@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyWebServer.Server.Http
+﻿namespace MyWebServer.Server.Http
 {
-    class HttpResponse
+    public class HttpResponse
     {
+        public HttpStatusCode StatusCode { get; init; }
+
+        public HttpHeaderCollection Headers { get; } = new();
+
+        public string Content { get; init; }
     }
 }
