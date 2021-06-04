@@ -20,24 +20,53 @@ namespace MyWebServer
             Console.WriteLine($"Server started on port {port}...");
             Console.WriteLine("Listening for requests...");
 
-            var connection = await serverListener.AcceptTcpClientAsync();
+            while (true)
+            {
+                var connection = await serverListener.AcceptTcpClientAsync();
 
-            var networkStream = connection.GetStream();
+                var networkStream = connection.GetStream();
 
-            var content = "<h1>Здрасти от Джулио!</h1>";
-            var contentLength = Encoding.UTF8.GetByteCount(content);
+                var bufferLength = 1024;
+                var buffer = new byte[bufferLength];
 
-            var response = $@"HTTP/1.1 200 OK
+                var requestBuilder = new StringBuilder();
+
+                while (networkStream.DataAvailable)
+                {
+                    var bytesRead = await networkStream.ReadAsync(buffer, 0, bufferLength);
+
+                    requestBuilder.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
+                }
+
+                Console.WriteLine(requestBuilder);
+
+                var content = @"
+<html>
+    <head>
+        <link rel=""icon"" href=""data:,"">
+    </head>
+    <body>
+        Hello from my server!
+    </body>
+</html>
+";
+                var contentLength = Encoding.UTF8.GetByteCount(content);
+
+                var response = $@"
+HTTP/1.1 200 OK
+Server: My Web Server
+Date: {DateTime.UtcNow:r}
 Content-length: {contentLength}
 Content-Type: text/html; charset=UTF-8
 
 {content}";
 
-            var responseBytes = Encoding.UTF8.GetBytes(response);
+                var responseBytes = Encoding.UTF8.GetBytes(response);
 
-            await networkStream.WriteAsync(responseBytes);
+                await networkStream.WriteAsync(responseBytes);
 
-            connection.Close();
+                connection.Close();
+            }
         }
     }
 }
