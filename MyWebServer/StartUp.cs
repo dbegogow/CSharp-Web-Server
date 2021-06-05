@@ -1,15 +1,17 @@
 ﻿using MyWebServer.Server;
 using System.Threading.Tasks;
+using MyWebServer.Server.Responses;
 
 namespace MyWebServer
 {
     class StartUp
     {
         public static async Task Main()
-        {
-            var server = new HttpServer("127.0.0.1", 9090);
+            => await new HttpServer(routes => routes
+                    .MapGet("/", new TextResponse("Hello from Ivo!"))
+                    .MapGet("/Cats", new TextResponse("<h1>Hello from the cats!</h1>", "text/html"))
+                    .MapGet("/Dogs", new TextResponse("<h1>Hello from the dogs!</h1>", "text/html")))
+                .Start();
 
-            await server.Start();
-        }
     }
 }
