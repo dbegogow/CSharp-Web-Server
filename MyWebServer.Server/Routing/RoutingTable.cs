@@ -1,6 +1,7 @@
 ﻿using MyWebServer.Server.Http;
 using MyWebServer.Server.Common;
 using System.Collections.Generic;
+using MyWebServer.Server.Responses;
 
 namespace MyWebServer.Server.Routing
 {
@@ -46,8 +47,10 @@ namespace MyWebServer.Server.Routing
             if (!this.routes.ContainsKey(requestMethod)
                 || !this.routes[requestMethod].ContainsKey(requestUrl))
             {
-
+                return new NotFoundResponse();
             }
+
+            return this.routes[requestMethod][requestUrl];
         }
     }
 }

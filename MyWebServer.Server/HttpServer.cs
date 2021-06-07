@@ -55,7 +55,7 @@ namespace MyWebServer.Server
 
                 var response = this.routingTable.MatchRequest(request);
 
-                await WriteResponse(networkStream);
+                await WriteResponse(networkStream, response);
 
                 connection.Close();
             }
@@ -88,30 +88,11 @@ namespace MyWebServer.Server
             return requestBuilder.ToString().TrimEnd();
         }
 
-        private async Task WriteResponse(NetworkStream networkStream)
+        private async Task WriteResponse(
+            NetworkStream networkStream,
+            HttpResponse response)
         {
-            var content = @"
-<html>
-    <head>
-        <link rel=""icon"" href=""data:,"">
-    </head>
-    <body>
-        Hello from my server!
-    </body>
-</html>
-";
-            var contentLength = Encoding.UTF8.GetByteCount(content);
-
-            var response = $@"
-HTTP/1.1 200 OK
-Server: My Web Server
-Date: {DateTime.UtcNow:r}
-Content-length: {contentLength}
-Content-Type: text/html; charset=UTF-8
-
-{content}";
-
-            var responseBytes = Encoding.UTF8.GetBytes(response);
+            var responseBytes = Encoding.UTF8.GetBytes(response.ToString());
 
             await networkStream.WriteAsync(responseBytes);
         }
