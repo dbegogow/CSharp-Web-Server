@@ -19,25 +19,27 @@ namespace MyWebServer.Server.Routing
             };
 
         public IRoutingTable Map(
-            string url,
             HttpMethod method,
-            HttpResponse response)
-            => method switch
-            {
-                HttpMethod.Get => this.MapGet(url, response)
-            };
-
-        public IRoutingTable MapGet(
-            string url,
+            string path,
             HttpResponse response)
         {
-            Guard.AgainstNull(url, nameof(url));
+            Guard.AgainstNull(path, nameof(path));
             Guard.AgainstNull(response, nameof(response));
 
-            this.routes[HttpMethod.Get][url] = response;
+            this.routes[method][path] = response;
 
             return this;
         }
+
+        public IRoutingTable MapGet(
+            string path,
+            HttpResponse response)
+            => Map(HttpMethod.Get, path, response);
+
+        public IRoutingTable MapPost(
+            string path,
+            HttpResponse response)
+            => Map(HttpMethod.Post, path, response);
 
         public HttpResponse MatchRequest(HttpRequest request)
         {
