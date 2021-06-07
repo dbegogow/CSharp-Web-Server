@@ -14,12 +14,16 @@ namespace MyWebServer.Server
         private readonly int port;
         private readonly TcpListener listener;
 
-        public HttpServer(string ipAddress, int port, Action<IRoutingTable> routingTable)
+        private readonly RoutingTable routingTable;
+
+        public HttpServer(string ipAddress, int port, Action<IRoutingTable> routingTableConfiguration)
         {
             this.ipAddress = IPAddress.Parse(ipAddress);
             this.port = port;
 
             this.listener = new TcpListener(this.ipAddress, this.port);
+
+            routingTableConfiguration(this.routingTable = new RoutingTable());
         }
 
         public HttpServer(int port, Action<IRoutingTable> routingTable)
@@ -47,9 +51,9 @@ namespace MyWebServer.Server
 
                 var requestText = await this.ReadRequest(networkStream);
 
-                Console.WriteLine(requestText);
-
                 var request = HttpRequest.Parse(requestText);
+
+                var response = this.routingTable.MatchRequest(request);
 
                 await WriteResponse(networkStream);
 

@@ -37,5 +37,17 @@ namespace MyWebServer.Server.Routing
 
             return this;
         }
+
+        public HttpResponse MatchRequest(HttpRequest request)
+        {
+            var requestMethod = request.Method;
+            var requestUrl = request.Url;
+
+            if (!this.routes.ContainsKey(requestMethod)
+                || !this.routes[requestMethod].ContainsKey(requestUrl))
+            {
+
+            }
+        }
     }
 }
