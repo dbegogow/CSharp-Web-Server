@@ -44,15 +44,15 @@ namespace MyWebServer.Server.Routing
         public HttpResponse MatchRequest(HttpRequest request)
         {
             var requestMethod = request.Method;
-            var requestUrl = request.Url;
+            var requestPath = request.Path;
 
             if (!this.routes.ContainsKey(requestMethod)
-                || !this.routes[requestMethod].ContainsKey(requestUrl))
+                || !this.routes[requestMethod].ContainsKey(requestPath))
             {
                 return new NotFoundResponse();
             }
 
-            return this.routes[requestMethod][requestUrl];
+            return this.routes[requestMethod][requestPath];
         }
     }
 }
