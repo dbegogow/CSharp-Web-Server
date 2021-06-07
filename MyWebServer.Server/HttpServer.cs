@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using MyWebServer.Server.Http;
 using MyWebServer.Server.Routing;
 
 namespace MyWebServer.Server
@@ -48,7 +49,7 @@ namespace MyWebServer.Server
 
                 Console.WriteLine(requestText);
 
-                //var request = HttpRequest.Parse(requestText);
+                var request = HttpRequest.Parse(requestText);
 
                 await WriteResponse(networkStream);
 
