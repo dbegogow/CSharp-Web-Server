@@ -59,7 +59,7 @@ namespace MyWebServer.Server.Http
 
         private static (string, Dictionary<string, string>) ParseUrl(string url)
         {
-            var urlParts = url.Split('?');
+            var urlParts = url.Split('?', 2);
 
             var path = urlParts[0];
             var query = urlParts.Length > 1
