@@ -13,7 +13,10 @@ namespace MyWebServer.Controllers
         protected HttpResponse Text(string text)
             => new TextResponse(text);
 
-        protected HtmlResponse Html(string html)
+        protected HttpResponse Html(string html)
             => new HtmlResponse(html);
+
+        protected HttpResponse Redirect(string location)
+            => new RedirectResponse(location);
     }
 }
