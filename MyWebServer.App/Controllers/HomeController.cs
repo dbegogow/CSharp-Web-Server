@@ -1,12 +1,16 @@
 ﻿using MyWebServer.Http;
+using MyWebServer.Controllers;
 
 namespace MyWebServer.App.Controllers
 {
-    public class HomeController
+    public class HomeController : Controller
     {
-        public HttpResponse Index()
+        public HomeController(HttpRequest request)
+            : base(request)
         {
-            return null;
         }
+
+        public HttpResponse Index()
+            => Text("Hello from Dzhulio!");
     }
 }
