@@ -1,6 +1,6 @@
-﻿using MyWebServer.Server.Http;
+﻿using MyWebServer.Http;
 
-namespace MyWebServer.Server.Responses
+namespace MyWebServer.Responses
 {
     public class TextResponse : ContentResponse
     {

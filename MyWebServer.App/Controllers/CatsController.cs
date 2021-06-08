@@ -1,6 +1,6 @@
-﻿using MyWebServer.Server.Http;
+﻿using MyWebServer.Http;
 
-namespace MyWebServer.Controllers
+namespace MyWebServer.App.Controllers
 {
     public class CatsController
     {

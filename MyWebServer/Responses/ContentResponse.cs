@@ -1,8 +1,8 @@
 ﻿using System.Text;
-using MyWebServer.Server.Http;
-using MyWebServer.Server.Common;
+using MyWebServer.Http;
+using MyWebServer.Common;
 
-namespace MyWebServer.Server.Responses
+namespace MyWebServer.Responses
 {
     public class ContentResponse : HttpResponse
     {

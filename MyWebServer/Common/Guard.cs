@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyWebServer.Server.Common
+namespace MyWebServer.Common
 {
     public static class Guard
     {

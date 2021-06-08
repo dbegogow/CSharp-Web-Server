@@ -1,8 +1,7 @@
-﻿using MyWebServer.Server;
+﻿using MyWebServer.Responses;
 using System.Threading.Tasks;
-using MyWebServer.Server.Responses;
 
-namespace MyWebServer
+namespace MyWebServer.App
 {
     class StartUp
     {
