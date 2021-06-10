@@ -26,6 +26,12 @@ namespace MyWebServer.App.Controllers
         }
 
         public HttpResponse Dogs()
-            => Html("<h1>Hello from the dogs!</h1>");
+            => View();
+
+        public HttpResponse Bunnies()
+            => View("Rabbits");
+
+        public HttpResponse Turtles()
+            => View("Animals/Wild/Turtles");
     }
 }
