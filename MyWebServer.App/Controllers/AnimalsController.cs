@@ -36,7 +36,12 @@ namespace MyWebServer.App.Controllers
         }
 
         public HttpResponse Dogs()
-            => View();
+            => View(new DogViewModel
+            {
+                Name = "Rex",
+                Age = 3,
+                Breed = "Street Perfect"
+            });
 
         public HttpResponse Bunnies()
             => View("Rabbits");
