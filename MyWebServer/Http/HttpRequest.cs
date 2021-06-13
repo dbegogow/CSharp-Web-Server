@@ -18,6 +18,8 @@ namespace MyWebServer.Http
 
         public IReadOnlyDictionary<string, HttpHeader> Headers { get; private set; }
 
+        public IReadOnlyDictionary<string, HttpCookie> Cookies { get; private set; }
+
         public string Body { get; private set; }
 
         public static HttpRequest Parse(string request)
