@@ -45,14 +45,15 @@ namespace MyWebServer.Http
 
             result.AppendLine($"HTTP/1.1 {(int)this.StatusCode} {this.StatusCode}");
 
-            foreach (var cookie in this.Cookies.Values)
-            {
-                this.AddHeader(HttpHeader.SetCookie, cookie.ToString());
-            }
-
             foreach (var header in this.Headers.Values)
             {
                 result.AppendLine(header.ToString());
+            }
+
+            foreach (var cookie in this.Cookies.Values)
+            {
+                result.AppendLine($"{HttpHeader.SetCookie}: {cookie}");
+                this.AddHeader(HttpHeader.SetCookie, cookie.ToString());
             }
 
             if (!string.IsNullOrEmpty(this.Content))
