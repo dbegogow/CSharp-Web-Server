@@ -62,12 +62,6 @@ namespace MyWebServer.Http
             };
         }
 
-        public override string ToString()
-        {
-            // TODO:
-            return null;
-        }
-
         private static HttpMethod ParseMethod(string method)
         {
             return method.ToUpper() switch
@@ -162,7 +156,10 @@ namespace MyWebServer.Http
 
             if (!sessions.ContainsKey(sessionId))
             {
-                sessions[sessionId] = new HttpSession(sessionId);
+                sessions[sessionId] = new HttpSession(sessionId)
+                {
+                    IsNew = true
+                };
             }
 
             return sessions[sessionId];
