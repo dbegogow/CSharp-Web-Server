@@ -114,7 +114,9 @@ namespace MyWebServer.Http
                 var headerName = headerParts[0];
                 var headerValue = headerParts[1].Trim();
 
-                headerCollection.Add(headerName, new HttpHeader(headerName, headerValue));
+                var header = new HttpHeader(headerName, headerValue);
+
+                headerCollection[headerName] = header;
             }
 
             return headerCollection;
@@ -141,7 +143,7 @@ namespace MyWebServer.Http
 
                     var cookie = new HttpCookie(cookieName, cookieValue);
 
-                    cookieCollection.Add(cookieName, cookie);
+                    cookieCollection[cookieName] = cookie;
                 }
             }
 

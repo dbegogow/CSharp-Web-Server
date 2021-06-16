@@ -15,7 +15,7 @@ namespace MyWebServer.App.Controllers
             => Text("Hello from Dzhulio!");
 
         public HttpResponse LocalRedirect()
-            => Redirect("/Cats");
+            => Redirect("/Animals/Cats");
 
         public HttpResponse ToSoftUni()
             => Redirect("https://softuni.bg");
