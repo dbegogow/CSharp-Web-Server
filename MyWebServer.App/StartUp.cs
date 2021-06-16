@@ -10,8 +10,7 @@ namespace MyWebServer.App
             => await new HttpServer(routes => routes
                     .MapStaticFiles()
                     .MapControllers()
-                    .MapGet<HomeController>("/ToCats", c => c.LocalRedirect())
-                    .MapPost<CatsController>("/Cats/Save", c => c.Save()))
+                    .MapGet<HomeController>("/ToCats", c => c.LocalRedirect()))
                 .Start();
     }
 }

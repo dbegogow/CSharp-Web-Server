@@ -10,9 +10,11 @@ namespace MyWebServer.App.Controllers
         {
         }
 
+        [HttpGet]
         public HttpResponse Create()
             => View();
 
+        [HttpPost]
         public HttpResponse Save()
         {
             var name = this.Request.Form["Name"];

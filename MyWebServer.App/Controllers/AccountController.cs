@@ -47,6 +47,10 @@ namespace MyWebServer.App.Controllers
             return Text("User is not authenticated");
         }
 
+        [Authorize]
+        public HttpResponse AuthorizationCheck()
+            => Text($"Current user: {this.User.Id}");
+
         public HttpResponse CookiesCheck()
         {
             const string cookieName = "My-Cookie";
