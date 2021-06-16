@@ -20,7 +20,10 @@ namespace MyWebServer.App.Controllers
         public HttpResponse ToSoftUni()
             => Redirect("https://softuni.bg");
 
-        public HttpResponse Error() 
+        public HttpResponse StaticFiles()
+            => View();
+
+        public HttpResponse Error()
             => throw new InvalidOperationException("Invalid action!");
     }
 }

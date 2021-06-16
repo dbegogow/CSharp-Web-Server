@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using MyWebServer.Common;
 using System.Collections.Generic;
@@ -21,14 +22,42 @@ namespace MyWebServer.Http
 
         public IDictionary<string, HttpCookie> Cookies { get; } = new Dictionary<string, HttpCookie>();
 
-        public string Content { get; protected set; }
+        public byte[] Content { get; protected set; }
+
+        public bool HasContent
+            => this.Content != null && this.Content.Any();
 
         public static HttpResponse ForError(string message)
             => new HttpResponse(HttpStatusCode.InternalServerError)
+                .SetContent(message, HttpContentType.PlainText);
 
-            {
-                Content = message
-            };
+        public HttpResponse SetContent(string content, string contentType)
+        {
+            Guard.AgainstNull(content, nameof(content));
+            Guard.AgainstNull(content, nameof(contentType));
+
+            var contentLength = Encoding.UTF8.GetByteCount(content).ToString();
+
+            this.AddHeader(HttpHeader.ContentType, contentType);
+            this.AddHeader(HttpHeader.ContentLength, contentLength);
+
+            this.Content = Encoding.UTF8.GetBytes(content);
+
+            return this;
+        }
+
+        public HttpResponse SetContent(byte[] content, string contentType)
+        {
+            Guard.AgainstNull(content, nameof(content));
+            Guard.AgainstNull(content, nameof(contentType));
+
+            this.AddHeader(HttpHeader.ContentType, contentType);
+            this.AddHeader(HttpHeader.ContentLength, content.Length.ToString());
+
+            this.Content = content;
+
+            return this;
+        }
 
         public void AddHeader(string name, string value)
         {
@@ -60,30 +89,14 @@ namespace MyWebServer.Http
             foreach (var cookie in this.Cookies.Values)
             {
                 result.AppendLine($"{HttpHeader.SetCookie}: {cookie}");
-                this.AddHeader(HttpHeader.SetCookie, cookie.ToString());
             }
 
-            if (!string.IsNullOrEmpty(this.Content))
+            if (this.HasContent)
             {
                 result.AppendLine();
-
-                result.Append(this.Content);
             }
 
             return result.ToString();
-        }
-
-        protected void PrepareContent(string content, string contentType)
-        {
-            Guard.AgainstNull(content, nameof(content));
-            Guard.AgainstNull(content, nameof(contentType));
-
-            var contentLength = Encoding.UTF8.GetByteCount(content).ToString();
-
-            this.AddHeader(HttpHeader.ContentType, contentType);
-            this.AddHeader(HttpHeader.ContentLength, contentLength);
-
-            this.Content = content;
         }
     }
 }
