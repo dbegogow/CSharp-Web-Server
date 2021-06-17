@@ -9,6 +9,7 @@ namespace MyWebServer.Controllers
 {
     public static class RoutingTableExtensions
     {
+        private static readonly Type stringType = typeof(string);
         private static readonly Type HttpResponseType = typeof(HttpResponse);
 
         public static IRoutingTable MapGet<TController>(
@@ -88,7 +89,9 @@ namespace MyWebServer.Controllers
 
                 var controllerInstance = CreateController(controllerAction.DeclaringType, request);
 
-                return (HttpResponse)controllerAction.Invoke(controllerInstance, Array.Empty<object>());
+                var parameterValues = GetParameterValues(controllerAction, request);
+
+                return (HttpResponse)controllerAction.Invoke(controllerInstance, parameterValues);
             };
 
         private static Controller CreateController(Type controller, HttpRequest request)
@@ -141,6 +144,44 @@ namespace MyWebServer.Controllers
             }
 
             return true;
+        }
+
+        private static object[] GetParameterValues(
+            MethodInfo controllerAction,
+            HttpRequest request)
+        {
+            var actionParameters = controllerAction
+                .GetParameters()
+                .Select(p => new
+                {
+                    p.Name,
+                    Type = p.ParameterType
+                })
+                .ToArray();
+
+            var parameterValues = new object[actionParameters.Length];
+
+            for (int i = 0; i < actionParameters.Length; i++)
+            {
+                var parameter = actionParameters[i];
+                var parameterName = parameter.Name;
+                var parameterType = parameter.Type;
+
+                var parameterValue =
+                    request.Query.GetValueOrDefault(parameterName) ??
+                    request.Form.GetValueOrDefault(parameterName);
+
+                if (parameterType == stringType)
+                {
+                    parameterValues[i] = parameterValue;
+                }
+                else
+                {
+                    parameterValues[i] = Convert.ChangeType(parameterValue, parameterType);
+                }
+            }
+
+            return parameterValues;
         }
     }
 }
