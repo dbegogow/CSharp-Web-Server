@@ -5,11 +5,6 @@ namespace MyWebServer.App.Controllers
 {
     public class CatsController : Controller
     {
-        public CatsController(HttpRequest request)
-            : base(request)
-        {
-        }
-
         [HttpGet]
         public HttpResponse Create()
             => View();

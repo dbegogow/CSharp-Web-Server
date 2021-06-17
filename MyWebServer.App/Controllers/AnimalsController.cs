@@ -6,11 +6,6 @@ namespace MyWebServer.App.Controllers
 {
     public class AnimalsController : Controller
     {
-        public AnimalsController(HttpRequest request)
-            : base(request)
-        {
-        }
-
         public HttpResponse Cats()
         {
             const string nameKey = "Name";
