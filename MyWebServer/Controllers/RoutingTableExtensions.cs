@@ -167,21 +167,34 @@ namespace MyWebServer.Controllers
                 var parameterName = parameter.Name;
                 var parameterType = parameter.Type;
 
-                var parameterValue =
-                    request.Query.GetValueOrDefault(parameterName) ??
-                    request.Form.GetValueOrDefault(parameterName);
-
-                if (parameterType == stringType)
+                if (parameterType.IsPrimitive || parameterType == stringType)
                 {
-                    parameterValues[i] = parameterValue;
+                    var parameterValue = request.GetValue(parameterName);
+
+                    parameterValues[i] = Convert.ChangeType(parameterValue, parameterType);
                 }
                 else
                 {
-                    parameterValues[i] = Convert.ChangeType(parameterValue, parameterType);
+                    var parameterValue = Activator.CreateInstance(parameterType);
+
+                    var parameterProperties = parameterType.GetProperties();
+
+                    foreach (var property in parameterProperties)
+                    {
+                        var propertyValue = request.GetValue(property.Name);
+
+                        property.SetValue(parameterValue, propertyValue);
+                    }
+
+                    parameterValues[i] = parameterValue;
                 }
             }
 
             return parameterValues;
         }
+
+        private static string GetValue(this HttpRequest request, string name)
+            => request.Query.GetValueOrDefault(name) ??
+               request.Form.GetValueOrDefault(name);
     }
 }

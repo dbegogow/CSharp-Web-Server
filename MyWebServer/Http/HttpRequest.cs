@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Web;
 
 namespace MyWebServer.Http
 {
@@ -87,7 +88,7 @@ namespace MyWebServer.Http
         }
 
         private static Dictionary<string, string> ParseQuery(string queryString)
-            => queryString
+            => HttpUtility.UrlDecode(queryString)
                 .Split('&')
                 .Select(part => part.Split('='))
                 .Where(part => part.Length == 2)
